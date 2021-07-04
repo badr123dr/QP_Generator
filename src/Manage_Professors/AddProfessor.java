@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class AddProfessor {
     private JTextField textName;
@@ -55,6 +56,8 @@ public AddProfessor() throws SQLException {
                     pst = db.connection.prepareStatement("INSERT INTO " +
                             "users(name_user,lastname_user,email,password,username,phone)" +
                             "VALUES(?,?,?,?,?,?)");
+
+
                     pst.setString(1, Name);
                     pst.setString(2, LastName);
                     pst.setString(3, EmailAdress);
@@ -63,6 +66,26 @@ public AddProfessor() throws SQLException {
                     pst.setString(6, Phone);
                     pst.executeUpdate();
                     JOptionPane.showMessageDialog(null, "Professor added with succesefully");
+                    pst = db.connection.prepareStatement("SELECT * from users where username=?");
+                    pst.setString(1, Username);
+                    ResultSet rs = pst.executeQuery();
+                    ArrayList<String> arrayList = new ArrayList<>();
+                    while(rs.next())
+                    {
+
+                    arrayList.add(rs.getString("id_user"));
+
+                    }
+
+                    String professeurid = arrayList.get(0);
+                    JOptionPane.showMessageDialog(null, "You motherfucker"  +   professeurid);
+                    pst = db.connection.prepareStatement("INSERT INTO " +
+                            "professeur(id_user)" +
+                            "VALUES(?)");
+                    pst.setString(1,professeurid);
+                    pst.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "ADDED WITH FUCKING SUCCESEFULLY");
+
                     //table_load();
                     textName.setText("");
                     txtLastName.setText("");
