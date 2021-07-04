@@ -15,7 +15,7 @@ public class Add_Level {
     private JTextField txt_nameLVL;
     private JTextField txt_descriptionLVL;
 
-    /*
+
     public static void main(String[] args) throws SQLException {
 
         JFrame frame = new JFrame("Add_Level");
@@ -24,7 +24,7 @@ public class Add_Level {
         frame.pack();
         frame.setVisible(true);
     }
-    */
+
     PreparedStatement pst;
     DatabaseConnection db ;
 

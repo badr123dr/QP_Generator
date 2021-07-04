@@ -53,11 +53,10 @@ public class View_Level {
         bt_modifier.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //frame.dispose();
+
                 new Update_Level();
 
-                //----ANI WASL HNA BAGHI NA FFICHER JFRAME UPDATE_LEVEL O N3TEHA LES INFOS DYA
-                //---- LEVEL SELECTIONNé F JTABLE
+
             }
         });
 

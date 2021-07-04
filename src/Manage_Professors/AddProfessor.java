@@ -78,13 +78,13 @@ public AddProfessor() throws SQLException {
                     }
 
                     String professeurid = arrayList.get(0);
-                    JOptionPane.showMessageDialog(null, "You motherfucker"  +   professeurid);
+                    JOptionPane.showMessageDialog(null, "ID is"  +   professeurid);
                     pst = db.connection.prepareStatement("INSERT INTO " +
                             "professeur(id_user)" +
                             "VALUES(?)");
                     pst.setString(1,professeurid);
                     pst.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "ADDED WITH FUCKING SUCCESEFULLY");
+                    JOptionPane.showMessageDialog(null, "ADDED WITH  SUCCESEFULLY");
 
                     //table_load();
                     textName.setText("");
