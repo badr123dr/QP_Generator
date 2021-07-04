@@ -95,15 +95,6 @@
           <text value="Username"/>
         </properties>
       </component>
-      <component id="f3fd5" class="javax.swing.JButton" binding="addNewProfessorButton" default-binding="true">
-        <constraints>
-          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <background color="-10845710"/>
-          <text value="Add new professor"/>
-        </properties>
-      </component>
       <component id="6a79f" class="javax.swing.JLabel">
         <constraints>
           <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -128,6 +119,15 @@
           </grid>
         </constraints>
         <properties/>
+      </component>
+      <component id="f3fd5" class="javax.swing.JButton" binding="addNewProfessorButton" default-binding="true">
+        <constraints>
+          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-13897026"/>
+          <text value="Add new professor"/>
+        </properties>
       </component>
     </children>
   </grid>

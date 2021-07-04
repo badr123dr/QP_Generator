@@ -84,4 +84,8 @@ public AddProfessor() throws SQLException {
 
         });
     }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }
