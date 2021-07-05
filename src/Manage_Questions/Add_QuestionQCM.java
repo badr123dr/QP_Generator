@@ -182,57 +182,60 @@ public class Add_QuestionQCM {
 
                     options = new ArrayList<>();
                     if(getOptions()==true){
+                        int result = JOptionPane.showConfirmDialog(null,"Are you sure to Add this new question?","Alert",JOptionPane.OK_CANCEL_OPTION);
+                        if(result==JOptionPane.OK_OPTION){
+                            try {
+                                // GET MODULE ID  ----------------------------------------------------------------------------------------------
+                                pst = db.connection.prepareStatement("SELECT * FROM module WHERE name_module = ?");
+                                pst.setString(1, module);
+                                ResultSet rs =  pst.executeQuery();
 
-                        try {
-                            // GET MODULE ID  ----------------------------------------------------------------------------------------------
-                            pst = db.connection.prepareStatement("SELECT * FROM module WHERE name_module = ?");
-                            pst.setString(1, module);
-                            ResultSet rs =  pst.executeQuery();
-
-                            ArrayList<String> myArrayList = new ArrayList<String>();
-                            while (rs.next()){
-                                myArrayList.add((rs.getString(1)));
-                            }
-                            String module_ID = myArrayList.get(0);
-                            //INSERT NEW QUESTION INTO BD  ---------------------------------------------------------------------------------
-                            pst = db.connection.prepareStatement("INSERT INTO " +
-                                    "questions(id_user,id_module,question_text,difficulty)" +
-                                    "VALUES(?,?,?,?)");
-                            String profID = UserLogged.Id;
-                            pst.setString(1, profID);
-                            pst.setString(2, module_ID);
-                            pst.setString(3, question);
-                            pst.setString(4, difficulty);
-
-                            pst.executeUpdate();
-
-                            JOptionPane.showMessageDialog(null,"Question added successfully");
-
-                            //GET QUESTION ID :________________________________________________________________
-                            pst = db.connection.prepareStatement("SELECT * FROM questions WHERE id_user = ? ORDER BY date_creation DESC ");
-                            pst.setString(1, UserLogged.Id);
-                            ResultSet res =  pst.executeQuery();
-
-                            ArrayList<String> myArray = new ArrayList<String>();
-                            while (res.next()){
-                                myArray.add((res.getString("id_question")));
-                            }
-                            String Quest_ID = myArray.get(0);
-                            JOptionPane.showMessageDialog(null,"Le ID de la question ajoutée est: "+Quest_ID);
-                            // INSERT QUESTION OPTIONS INTO BD :________________________________________________
-                            for(int j=0;j<options.size();j++){
+                                ArrayList<String> myArrayList = new ArrayList<String>();
+                                while (rs.next()){
+                                    myArrayList.add((rs.getString(1)));
+                                }
+                                String module_ID = myArrayList.get(0);
+                                //INSERT NEW QUESTION INTO BD  ---------------------------------------------------------------------------------
                                 pst = db.connection.prepareStatement("INSERT INTO " +
-                                        "options(description,id_question)" +
-                                        "VALUES(?,?)");
-                                pst.setString(1, options.get(j).toString());
-                                pst.setString(2, Quest_ID);
+                                        "questions(id_user,id_module,question_text,difficulty)" +
+                                        "VALUES(?,?,?,?)");
+                                String profID = UserLogged.Id;
+                                pst.setString(1, profID);
+                                pst.setString(2, module_ID);
+                                pst.setString(3, question);
+                                pst.setString(4, difficulty);
 
                                 pst.executeUpdate();
-                            }
-                            JOptionPane.showMessageDialog(null,"Les options sont ajoutées avec succés !");
 
-                        }catch (SQLException ex){
-                            ex.printStackTrace();
+                                JOptionPane.showMessageDialog(null,"Question added successfully");
+
+                                //GET QUESTION ID :________________________________________________________________
+                                pst = db.connection.prepareStatement("SELECT * FROM questions WHERE id_user = ? ORDER BY date_creation DESC ");
+                                pst.setString(1, UserLogged.Id);
+                                ResultSet res =  pst.executeQuery();
+
+                                ArrayList<String> myArray = new ArrayList<String>();
+                                while (res.next()){
+                                    myArray.add((res.getString("id_question")));
+                                }
+                                String Quest_ID = myArray.get(0);
+                                //JOptionPane.showMessageDialog(null,"Le ID de la question ajoutée est: "+Quest_ID);
+                                // INSERT QUESTION OPTIONS INTO BD :________________________________________________
+                                for(int j=0;j<options.size();j++){
+                                    pst = db.connection.prepareStatement("INSERT INTO " +
+                                            "options(description,id_question)" +
+                                            "VALUES(?,?)");
+                                    pst.setString(1, options.get(j).toString());
+                                    pst.setString(2, Quest_ID);
+
+                                    pst.executeUpdate();
+                                }
+                                //---------
+                                JOptionPane.showMessageDialog(null,"Les options sont ajoutées avec succés !");
+
+                            }catch (SQLException ex){
+                                ex.printStackTrace();
+                            }
                         }
                     }else{
                         JOptionPane.showMessageDialog(null,"Le remplissage des options est obligatoire");
