@@ -65,14 +65,17 @@ public class View_Module_Level {
                     String levelid = tblModel.getValueAt(i,0).toString();
 
                     try {
-                        pst = db.connection.prepareStatement("DELETE FROM module_level WHERE id_module =? and id_level=?");
-                        pst.setString(1,id_module);
-                        pst.setString(2,levelid);
-                        pst.executeUpdate();
+                        int result = JOptionPane.showConfirmDialog((Component) null, "Are you sure?",
+                                "alert", JOptionPane.OK_CANCEL_OPTION);
+                        if (result == JOptionPane.OK_OPTION) {
+                            pst = db.connection.prepareStatement("DELETE FROM module_level WHERE id_module =? and id_level=?");
+                            pst.setString(1, id_module);
+                            pst.setString(2, levelid);
+                            pst.executeUpdate();
 
-                        showTableData();
-                        JOptionPane.showMessageDialog(null,"Deleted successfully !");
-
+                            showTableData();
+                            JOptionPane.showMessageDialog(null, "Deleted successfully !");
+                        }
                     } catch (SQLException | HeadlessException ex) {
                         JOptionPane.showMessageDialog(null,ex);
                     }

@@ -63,34 +63,43 @@ public class View_Level {
         bt_supprimer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+
                 DefaultTableModel tblModel = (DefaultTableModel) level_table.getModel();
-                if(level_table.getSelectedRowCount()==1){
+                if(level_table.getSelectedRowCount()==1) {
                     //if a single row is selected
                     int i = level_table.getSelectedRow();
-                    String id = tblModel.getValueAt(i,0).toString();
+                    String id = tblModel.getValueAt(i, 0).toString();
 
                     try {
-                        pst = db.connection.prepareStatement("DELETE FROM level WHERE id_level =?");
-                        pst.setString(1,id);
-                        pst.executeUpdate();
+                        int result = JOptionPane.showConfirmDialog((Component) null, "Are you sure?",
+                                "alert", JOptionPane.OK_CANCEL_OPTION);
+                        if (result == JOptionPane.OK_OPTION) {
+                            pst = db.connection.prepareStatement("DELETE FROM level WHERE id_level =?");
+                            pst.setString(1, id);
+                            pst.executeUpdate();
 
-                        showTableData();
-                        //tblModel.removeRow(level_table.getSelectedRow());
-                        JOptionPane.showMessageDialog(null,"Deleted successfully !");
+                            showTableData();
+                            //tblModel.removeRow(level_table.getSelectedRow());
+                            JOptionPane.showMessageDialog(null, "Deleted successfully !");
+                        } else{Thread.sleep(1);}
+                        } catch(SQLException | HeadlessException | InterruptedException ex){
+                            JOptionPane.showMessageDialog(null, ex);
+                        }
 
-                    } catch (SQLException | HeadlessException ex) {
-                        JOptionPane.showMessageDialog(null,ex);
+
+
+                    }
+                    else{
+                        if (level_table.getRowCount() == 0) {
+                            //if table is empty
+                            JOptionPane.showMessageDialog(null, "Table is empty !!");
+                        } else {
+                            //if table is not empty but any row is selected or multiple rows are selected
+                            JOptionPane.showMessageDialog(null, "Please select a single row to delete !");
+                        }
                     }
 
-                }else{
-                    if(level_table.getRowCount()==0){
-                        //if table is empty
-                        JOptionPane.showMessageDialog(null,"Table is empty !!");
-                    }else {
-                        //if table is not empty but any row is selected or multiple rows are selected
-                        JOptionPane.showMessageDialog(null,"Please select a single row to delete !");
-                    }
-                }
             }
         });
     }

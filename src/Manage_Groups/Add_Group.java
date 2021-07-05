@@ -81,8 +81,12 @@ public class Add_Group {
 
                     }
 
-                  //  String levelid = arrayList.get(0);
 
+                    if(txtDescription.getText().trim().length()==0 && textName.getText().trim().length()==0 )
+                    {
+                        JOptionPane.showMessageDialog(null,"please enter a validate value.");
+                    }
+                    else{
                     pst = db.connection.prepareStatement("INSERT INTO " +
                             "groups(name,description,id_level)" +
                             "VALUES(?,?,?)");
@@ -94,7 +98,7 @@ public class Add_Group {
                     //table_load();
                     textName.setText("");
                     txtDescription.setText("");
-                    textName.requestFocus();
+                    textName.requestFocus();}
                 }catch (SQLException e1)
                 {
                     e1.printStackTrace();

@@ -64,14 +64,19 @@ public class View_Groups {
                     String id = tblModel.getValueAt(i,0).toString();
 
                     try {
-                        pst = db.connection.prepareStatement("DELETE FROM groups WHERE id_group =?");
-                        pst.setString(1,id);
-                        pst.executeUpdate();
+                        int result = JOptionPane.showConfirmDialog((Component) null, "Are you sure?",
+                                "alert", JOptionPane.OK_CANCEL_OPTION);
+                        if (result == JOptionPane.OK_OPTION) {
+                            pst = db.connection.prepareStatement("DELETE FROM groups WHERE id_group =?");
+                            pst.setString(1, id);
+                            pst.executeUpdate();
 
-                        showTableData();
-                        //tblModel.removeRow(level_table.getSelectedRow());
-                        JOptionPane.showMessageDialog(null,"Deleted successfully !");
-
+                            showTableData();
+                            //tblModel.removeRow(level_table.getSelectedRow());
+                            JOptionPane.showMessageDialog(null, "Deleted successfully !");
+                        }else{
+                            System.out.println("Canceled");
+                        }
                     } catch (SQLException | HeadlessException ex) {
                         JOptionPane.showMessageDialog(null,ex);
                     }

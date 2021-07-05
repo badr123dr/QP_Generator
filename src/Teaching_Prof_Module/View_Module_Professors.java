@@ -69,15 +69,18 @@ public class View_Module_Professors {
                     String id_professor = tblModel.getValueAt(i,2).toString();
 
                     try {
-                        pst = db.connection.prepareStatement("DELETE FROM module_professor WHERE id_module =? and id_user=?");
-                        pst.setString(1,id_module);
-                        pst.setString(2,id_professor);
-                        pst.executeUpdate();
+                        int result = JOptionPane.showConfirmDialog((Component) null, "Are you sure?",
+                                "alert", JOptionPane.OK_CANCEL_OPTION);
+                        if (result == JOptionPane.OK_OPTION) {
+                            pst = db.connection.prepareStatement("DELETE FROM module_professor WHERE id_module =? and id_user=?");
+                            pst.setString(1, id_module);
+                            pst.setString(2, id_professor);
+                            pst.executeUpdate();
 
-                        showTableData();
-                        //tblModel.removeRow(level_table.getSelectedRow());
-                        JOptionPane.showMessageDialog(null,"Deleted successfully !");
-
+                            showTableData();
+                            //tblModel.removeRow(level_table.getSelectedRow());
+                            JOptionPane.showMessageDialog(null, "Deleted successfully !");
+                        }
                     } catch (SQLException | HeadlessException ex) {
                         JOptionPane.showMessageDialog(null,ex);
                     }

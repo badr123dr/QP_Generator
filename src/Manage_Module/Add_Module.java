@@ -38,25 +38,29 @@ public class Add_Module {
                 Name = txtName.getText();
 
 
-                try {
-                    pst = db.connection.prepareStatement("INSERT INTO " +
-                            "module(name_module,description)" +
-                            "VALUES(?,?)");
-                    pst.setString(1, Name);
-                    pst.setString(2, Description);
 
-                    pst.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "Module added with succesefully");
-                    //table_load();
-                    txtdescription.setText("");
-                    txtName.setText("");
-                    txtName.requestFocus();
-                }
-
-                catch (SQLException e1)
+                if(txtdescription.getText().trim().length()==0 && txtName.getText().trim().length()==0 )
                 {
+                    JOptionPane.showMessageDialog(null,"please enter a validate value.");
+                }
+                else {
+                    try {
+                        pst = db.connection.prepareStatement("INSERT INTO " +
+                                "module(name_module,description)" +
+                                "VALUES(?,?)");
+                        pst.setString(1, Name);
+                        pst.setString(2, Description);
 
-                    e1.printStackTrace();
+                        pst.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "Module added with succesefully");
+                        //table_load();
+                        txtdescription.setText("");
+                        txtName.setText("");
+                        txtName.requestFocus();
+                    } catch (SQLException e1) {
+
+                        e1.printStackTrace();
+                    }
                 }
 
             }

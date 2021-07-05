@@ -38,22 +38,26 @@ public class Add_Level {
                 String level_name,description;
                 level_name = txt_nameLVL.getText();
                 description = txt_descriptionLVL.getText();
-
-                try {
-                    pst = db.connection.prepareStatement("INSERT INTO " +
-                            "level(name_level,description)" +
-                            "VALUES(?,?)");
-                    pst.setString(1, level_name);
-                    pst.setString(2, description);
-                    pst.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "Level added succesefully");
-                    //table_load();
-                    txt_nameLVL.setText("");
-                    txt_descriptionLVL.setText("");
-                    txt_nameLVL.requestFocus();
-                }catch (SQLException e1)
+                if(txt_nameLVL.getText().trim().length()==0 && txt_descriptionLVL.getText().trim().length()==0 )
                 {
-                    e1.printStackTrace();
+                    JOptionPane.showMessageDialog(null,"please enter a validate value.");
+                }
+                else {
+                    try {
+                        pst = db.connection.prepareStatement("INSERT INTO " +
+                                "level(name_level,description)" +
+                                "VALUES(?,?)");
+                        pst.setString(1, level_name);
+                        pst.setString(2, description);
+                        pst.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "Level added succesefully");
+                        //table_load();
+                        txt_nameLVL.setText("");
+                        txt_descriptionLVL.setText("");
+                        txt_nameLVL.requestFocus();
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
                 }
 
             }

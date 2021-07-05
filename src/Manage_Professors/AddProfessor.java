@@ -44,64 +44,67 @@ public AddProfessor() throws SQLException {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                String Name,LastName,EmailAdress,Password,Username,Phone;
-                LastName=txtLastName.getText();
+                String Name, LastName, EmailAdress, Password, Username, Phone;
+                LastName = txtLastName.getText();
                 Name = textName.getText();
                 EmailAdress = txtEmail.getText();
                 Password = txtPassword.getText();
                 Username = txtUsername.getText();
                 Phone = txtPhone.getText();
+                if (textName.getText().trim().length() == 0 && txtUsername.getText().trim().length() == 0
+                        && txtLastName.getText().trim().length() == 0 && txtEmail.getText().trim().length() == 0
+                        && txtPassword.getText().trim().length() == 0 && txtPhone.getText().trim().length() == 0) {
+                    JOptionPane.showMessageDialog(null, "please enter a validate value.");
+                } else {
+                    try {
+                        pst = db.connection.prepareStatement("INSERT INTO " +
+                                "users(name_user,lastname_user,email,password,username,phone)" +
+                                "VALUES(?,?,?,?,?,?)");
 
-                try {
-                    pst = db.connection.prepareStatement("INSERT INTO " +
-                            "users(name_user,lastname_user,email,password,username,phone)" +
-                            "VALUES(?,?,?,?,?,?)");
+
+                        pst.setString(1, Name);
+                        pst.setString(2, LastName);
+                        pst.setString(3, EmailAdress);
+                        pst.setString(4, Password);
+                        pst.setString(5, Username);
+                        pst.setString(6, Phone);
+                        pst.executeUpdate();
+                        pst = db.connection.prepareStatement("SELECT * from users where username=?");
+                        pst.setString(1, Username);
+                        ResultSet rs = pst.executeQuery();
+                        ArrayList<String> arrayList = new ArrayList<>();
+                        while (rs.next()) {
+
+                            arrayList.add(rs.getString("id_user"));
+
+                        }
+
+                        String professeurid = arrayList.get(0);
 
 
-                    pst.setString(1, Name);
-                    pst.setString(2, LastName);
-                    pst.setString(3, EmailAdress);
-                    pst.setString(4, Password);
-                    pst.setString(5, Username);
-                    pst.setString(6, Phone);
-                    pst.executeUpdate();
-                    pst = db.connection.prepareStatement("SELECT * from users where username=?");
-                    pst.setString(1, Username);
-                    ResultSet rs = pst.executeQuery();
-                    ArrayList<String> arrayList = new ArrayList<>();
-                    while(rs.next())
-                    {
+                        pst = db.connection.prepareStatement("INSERT INTO " +
+                                "professeur(id_user)" +
+                                "VALUES(?)");
+                        pst.setString(1, professeurid);
+                        pst.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "Operation Succeeded");
 
-                    arrayList.add(rs.getString("id_user"));
-
+                        //table_load();
+                        textName.setText("");
+                        txtLastName.setText("");
+                        txtEmail.setText("");
+                        txtPassword.setText("");
+                        txtUsername.setText("");
+                        txtPhone.setText("");
+                        textName.requestFocus();
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
                     }
-
-                    String professeurid = arrayList.get(0);
-
-                    pst = db.connection.prepareStatement("INSERT INTO " +
-                            "professeur(id_user)" +
-                            "VALUES(?)");
-                    pst.setString(1,professeurid);
-                    pst.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "Operation Succeeded");
-
-                    //table_load();
-                    textName.setText("");
-                    txtLastName.setText("");
-                    txtEmail.setText("");
-                    txtPassword.setText("");
-                    txtUsername.setText("");
-                    txtPhone.setText("");
-                    textName.requestFocus();
                 }
-
-                catch (SQLException e1)
-                {
-
-                    e1.printStackTrace();
-                }
-
             }
+
+
+
 
 
         });
