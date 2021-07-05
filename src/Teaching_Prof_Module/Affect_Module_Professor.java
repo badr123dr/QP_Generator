@@ -3,8 +3,11 @@ package Teaching_Prof_Module;
 import Database.DatabaseConnection;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,7 +49,7 @@ public class Affect_Module_Professor {
         while(res.next())
         {
             professorComboBox.addItem(res.getString(1));
-            Full_name_Professor_label.setText(res.getString(2)+" "+res.getString(3));
+
 
         }
     }
@@ -56,12 +59,16 @@ public class Affect_Module_Professor {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        frame.setSize(350,400);
+
+
     }
 
     public Affect_Module_Professor() throws SQLException {
         db = DatabaseConnection.getInstance();
         load_data_modules();
         load_data_professor();
+        Full_name_Professor_label.setVisible(false);
         assignButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,6 +114,37 @@ public class Affect_Module_Professor {
                     pst.executeUpdate();
                     JOptionPane.showMessageDialog(null, "module assigned with successfully");
                 }catch (SQLException e1)
+                {
+                    e1.printStackTrace();
+                }
+
+
+            }
+        });
+        professorComboBox.addItemListener(new ItemListener()  {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                try{
+                    String username=professorComboBox.getSelectedItem().toString();
+
+                    db = DatabaseConnection.getInstance();
+                    pst = db.connection.prepareStatement("SELECT u.name_user,u.lastname_user FROM users u where u.username=?");
+                    pst.setString(1,username );
+                    ResultSet res = pst.executeQuery();
+                    ArrayList<String> listes = new ArrayList<>();
+
+                    while(res.next())
+                    {
+                        listes.add(res.getString(1) + " " + res.getString(2));
+
+
+                    }
+                    Full_name_Professor_label.setVisible(true);
+                    Full_name_Professor_label.setText(listes.get(0));
+
+
+
+                }catch(SQLException e1)
                 {
                     e1.printStackTrace();
                 }
