@@ -101,14 +101,16 @@ public class UserLogin extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String userName = textField.getText();
                 String password = passwordField.getText();
+
                 try {
                     db = DatabaseConnection.getInstance();
 
-                  pst = (PreparedStatement) db.connection
-                            .prepareStatement("Select email, password from users where email=? and password=?");
+                  pst =  db.connection
+                            .prepareStatement("Select email, password,id_user,from users where email=? and password=?");
 
                     pst.setString(1, userName);
                     pst.setString(2, password);
+
                     ResultSet rs = pst.executeQuery();
                     if (rs.next()) {
                         dispose();

@@ -65,7 +65,6 @@ public AddProfessor() throws SQLException {
                     pst.setString(5, Username);
                     pst.setString(6, Phone);
                     pst.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "Professor added with succesefully");
                     pst = db.connection.prepareStatement("SELECT * from users where username=?");
                     pst.setString(1, Username);
                     ResultSet rs = pst.executeQuery();
@@ -78,13 +77,13 @@ public AddProfessor() throws SQLException {
                     }
 
                     String professeurid = arrayList.get(0);
-                    JOptionPane.showMessageDialog(null, "ID is"  +   professeurid);
+
                     pst = db.connection.prepareStatement("INSERT INTO " +
                             "professeur(id_user)" +
                             "VALUES(?)");
                     pst.setString(1,professeurid);
                     pst.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "ADDED WITH  SUCCESEFULLY");
+                    JOptionPane.showMessageDialog(null, "Operation Succeeded");
 
                     //table_load();
                     textName.setText("");
