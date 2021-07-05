@@ -1,4 +1,4 @@
-package Teaching_Prof_Module;
+package Level_Modules;
 
 import Database.DatabaseConnection;
 import net.proteanit.sql.DbUtils;
@@ -12,26 +12,22 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class View_Module_Professors {
+public class View_Module_Level {
+    private JPanel list_module_level;
     private JLabel list_label;
     private JTable table1;
     private JButton updateButton;
     private JButton deleteButton;
-    private JPanel list_module_professor;
+    private JPanel module_level;
     static PreparedStatement pst;
     static DatabaseConnection db ;
-
 
     public void showTableData(){
         try
         {
-            pst = db.connection.prepareStatement("select mp.id_module as ModuleID ," +
-                    "m.name_module as Module,mp.id_user,u.name_user,u.lastname_user" +
-
-                    "                      from users u join professeur p ON u.id_user=p.id_user" +
-                    "                    JOIN module_professor mp ON p.id_user=mp.id_user" +
-                    "                    JOIN module m ON m.id_module=mp.id_module "
-                    );
+            pst = db.connection.prepareStatement("SELECT l.id_level,l.name_level,m.id_module,m.name_module" +
+                    "                    FROM level l JOIN module_level ml ON ml.id_level=l.id_level" +
+                    "                    JOIN module m ON m.id_module=ml.id_module");
             ResultSet rs = pst.executeQuery();
             table1.setModel(DbUtils.resultSetToTableModel(rs));
         }
@@ -42,14 +38,14 @@ public class View_Module_Professors {
     }
 
     public static void main(String[] args) throws SQLException {
-        JFrame frame = new JFrame("View_Module_Professors");
-        frame.setContentPane(new View_Module_Professors().list_module_professor);
+        JFrame frame = new JFrame("View_Module_Level");
+        frame.setContentPane(new View_Module_Level().module_level);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
 
-    public View_Module_Professors() throws SQLException {
+    public View_Module_Level() throws SQLException {
         db=DatabaseConnection.getInstance();
         showTableData();
         updateButton.addActionListener(new ActionListener() {
@@ -65,17 +61,16 @@ public class View_Module_Professors {
                 if(table1.getSelectedRowCount()==1){
                     //if a single row is selected
                     int i = table1.getSelectedRow();
-                    String id_module = tblModel.getValueAt(i,0).toString();
-                    String id_professor = tblModel.getValueAt(i,2).toString();
+                    String id_module = tblModel.getValueAt(i,2).toString();
+                    String levelid = tblModel.getValueAt(i,0).toString();
 
                     try {
-                        pst = db.connection.prepareStatement("DELETE FROM module_professor WHERE id_module =? and id_user=?");
+                        pst = db.connection.prepareStatement("DELETE FROM module_level WHERE id_module =? and id_level=?");
                         pst.setString(1,id_module);
-                        pst.setString(2,id_professor);
+                        pst.setString(2,levelid);
                         pst.executeUpdate();
 
                         showTableData();
-                        //tblModel.removeRow(level_table.getSelectedRow());
                         JOptionPane.showMessageDialog(null,"Deleted successfully !");
 
                     } catch (SQLException | HeadlessException ex) {
@@ -95,6 +90,8 @@ public class View_Module_Professors {
 
 
             }
+
+
         });
     }
 }

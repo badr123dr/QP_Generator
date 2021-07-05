@@ -7,7 +7,8 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import Database.*;
-import LoggedProf.UserLogged;
+//import LoggedProf.UserLogged;
+import  LoggedProf.*;
 
 public class Add_QuestionSimple {
     private JLabel lb_title;
@@ -19,26 +20,57 @@ public class Add_QuestionSimple {
     private JLabel lb_module;
     private JLabel lb_question;
     private JLabel lb_difficulty;
+    private JPanel simpleQuestionPanel;
 
     PreparedStatement pst;
     DatabaseConnection db ;
+/*
+    public static void main(String[] args) throws SQLException {
 
-    public Add_QuestionSimple() throws SQLException {
+        JFrame frame = new JFrame("Add Simple Question");
+        frame.setContentPane(new Add_QuestionSimple().simpleQuestionPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+
+        JOptionPane.showMessageDialog(null,UserLogged.Id);
+    }
+*/
+    public void remplirCombo(){
+
         cb_difficulty.addItem("Easy");
         cb_difficulty.addItem("Medium");
         cb_difficulty.addItem("Advanced");
+        try {
+            //pst = db.connection.prepareStatement("SELECT * FROM module");
+            pst = db.connection.prepareStatement("select m.name_module " +
+                    "from professeur p join module_professor mp " +
+                    "on p.id_user = mp.id_user join module m " +
+                    "on m.id_module = mp.id_module " +
+                    "where p.id_user = ?");
+            pst.setString(1,UserLogged.Id);
+            ResultSet rs =  pst.executeQuery();
+
+            while (rs.next()){
+                cb_moduleNames.addItem(rs.getString(1));
+            }
+        }catch (SQLException ex){
+            System.out.println(ex.getStackTrace());
+        }
+    }
+    public Add_QuestionSimple() throws SQLException {
 
         db=DatabaseConnection.getInstance();
+        remplirCombo();
 
         bt_ajouter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if(textArea_question.getText()==""){
+                if(textArea_question.getText().trim().length() ==0){
                     JOptionPane.showMessageDialog(null,"Les champs sont obligatoires");
                 }else{
                     String module = cb_moduleNames.getSelectedItem().toString();
-                    String level = cb_levelNames.getSelectedItem().toString();
                     String difficulty = cb_difficulty.getSelectedItem().toString();
                     String question = textArea_question.getText().toString();
                     try {
