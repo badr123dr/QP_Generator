@@ -1,3 +1,5 @@
+package Teaching_Prof_Module;
+
 import javax.swing.*;
 
 public class Affect_Module_Professor {
